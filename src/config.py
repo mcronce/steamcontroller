@@ -128,6 +128,15 @@ def load_vdf(path): # {{{
 # }}}
 
 def get_binding(group_inputs, input_name, activator): # {{{
+	# This is the list of key "names" from Valve's VDF files (keys) that need
+	#    to be replaced with libinput constants (values)
+	replace = {
+		'PERIOD' : 'DOT',
+		'ESCAPE' : 'ESC',
+		'DASH' : 'MINUS',
+		'EQUALS' : 'EQUAL'
+	}
+
 	try:
 		activator = group_inputs[input_name]['activators'][activator]
 		# TODO:  Proper support for multiples
@@ -144,14 +153,8 @@ def get_binding(group_inputs, input_name, activator): # {{{
 		binding[1] = binding[1].replace('_', '')
 		binding[1] = binding[1].replace(',', '') # Items such as "key_press W, w"; everything after the comma is already trimmed by split() above, ignore trailing items for now'
 
-		if(binding[1] == 'PERIOD'):
-			binding[1] = 'DOT'
-		elif(binding[1] == 'ESCAPE'):
-			binding[1] = 'ESC'
-		elif(binding[1] == 'DASH'):
-			binding[1] = 'MINUS'
-		elif(binding[1] == 'EQUALS'):
-			binding[1] = 'EQUAL'
+		if(binding[1] in replace):
+			binding[1] = replace[binding[1]]
 
 		# Holy crap, the hacks don't get much uglier than this.  Add 0x100 to
 		#    all KEY_ constants, because the keyboard ends at 0xff and that
@@ -442,9 +445,14 @@ class Configurator():
 		for group in self.config.values():
 			for mode in group.values():
 				if('buttons' in mode):
-					modes.add(Modes.GAMEPAD)
-					break
-			if(Modes.GAMEPAD in modes):
+					for button in mode['buttons'].values():
+						if(button == None or type(button) == list):
+							continue
+						if(button < 0x100):
+							modes.add(Modes.KEYBOARD)
+						else:
+							modes.add(Modes.GAMEPAD)
+			if(Modes.GAMEPAD in modes and Modes.KEYBOARD in modes):
 				break
 		for group in ['left_trackpad', 'right_trackpad']:
 			for mode in self.config[group].values():
