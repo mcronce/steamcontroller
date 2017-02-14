@@ -24,6 +24,8 @@
 
 
 import os
+import re
+import json
 import ctypes
 import _ctypes
 import time
@@ -199,6 +201,7 @@ class UInput(object):
         self.version = version
         self.keyboard = keyboard
         self._fd = None
+        print(self)
 
     def createDevice(self):
         possible_paths = []
@@ -225,6 +228,8 @@ class UInput(object):
             )
         )
 
+        print(self._a)
+        print(json.dumps({k : str(getattr(self, k)) for k in dir(self) if(not re.match('__.*__', k))}, indent = 4))
         self._lib = ctypes.CDLL(lib)
 
         c_k        = (ctypes.c_uint16 * len(self._k))(*self._k)
@@ -268,6 +273,8 @@ class UInput(object):
         if self._fd == None:
             self.createDevice()
 
+        print(ctypes.c_uint16(key))
+        print(ctypes.c_int32(val))
         self._lib.uinput_key(self._fd,
                              ctypes.c_uint16(key),
                              ctypes.c_int32(val))
@@ -283,6 +290,7 @@ class UInput(object):
 
         if self._fd == None:
             self.createDevice()
+        print(axis, val)
 
         self._lib.uinput_abs(self._fd,
                              ctypes.c_uint16(axis),
