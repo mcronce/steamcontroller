@@ -421,7 +421,7 @@ class Configurator():
 
 		# This cannot be configured from the Steam UI.  Should we extend that file
 		#    to support configuring it?
-		self.evm.setButtonAction(SCButtons.STEAM, Keys.KEY_HOMEPAGE, Modes.GAMEPAD)
+		self.evm.setButtonAction(SCButtons.STEAM, Keys.KEY_ESC)
 	# }}}
 
 	def get_keys(self): # {{{
@@ -449,27 +449,8 @@ class Configurator():
 	# }}}
 
 	def get_modes(self): # {{{
-		modes = set()
-		for group in self.config.values():
-			for mode in group.values():
-				if('buttons' in mode):
-					for button in mode['buttons'].values():
-						if(button == None or type(button) == list):
-							continue
-						if(button < 0x100):
-							modes.add(Modes.KEYBOARD)
-						else:
-							modes.add(Modes.GAMEPAD)
-			if(Modes.GAMEPAD in modes and Modes.KEYBOARD in modes):
-				break
-		for group in ['left_trackpad', 'right_trackpad']:
-			for mode in self.config[group].values():
-				if(mode['mode'] in [PadModes.MOUSE, PadModes.MOUSESCROLL]):
-					modes.add(Modes.MOUSE)
-					break
-			if(Modes.MOUSE in modes):
-				break
-		return list(modes)
+		# TODO:  Figure out if this is actually useful or not
+		return [Modes.GAMEPAD, Modes.MOUSE, Modes.KEYBOARD]
 	# }}}
 
 	def modeshift(self, sections, pressed): # {{{
@@ -495,59 +476,62 @@ class Configurator():
 		group = self.config['right_trackpad'][mode] if pos == Pos.RIGHT else self.config['left_trackpad'][mode]
 		if(group['mode'] == PadModes.MOUSE):
 			self.evm.setPadMouse(pos)
-			self.evm.setButtonAction(button, group['buttons']['click'], Modes.GAMEPAD)
+			self.evm.setButtonAction(button, group['buttons']['click'])
 		elif(group['mode'] == PadModes.MOUSESCROLL):
 			# TODO:  Support configuration for scroll directions
 			self.evm.setPadScroll(pos)
-			self.evm.setButtonAction(button, group['buttons']['click'], Modes.GAMEPAD)
+			self.evm.setButtonAction(button, group['buttons']['click'])
 		elif(group['mode'] == PadModes.BUTTONCLICK):
-			# TODO:  Configurable whether or not click is required?
 			buttons = group['buttons']
-			self.evm.setPadButtons(pos, [buttons['north'], buttons['west'], buttons['south'], buttons['east']], clicked = True, mode = Modes.GAMEPAD)
+			self.evm.setPadButtons(pos, [buttons['north'], buttons['west'], buttons['south'], buttons['east']], clicked = True)
+		elif(group['mode'] == PadModes.BUTTONTOUCH):
+			buttons = group['buttons']
+			self.evm.setPadButtons(pos, [buttons['north'], buttons['west'], buttons['south'], buttons['east']], clicked = False)
+			self.evm.setButtonAction(button, group['buttons']['click'])
 		elif(group['mode'] == PadModes.AXIS):
 			self.evm.setPadAxes(pos, *[axis[0] for axis in group['axes']])
-			self.evm.setButtonAction(button, group['buttons']['click'], Modes.GAMEPAD)
+			self.evm.setButtonAction(button, group['buttons']['click'])
 	# }}}
 
 	def set_joystick_config(self, mode): # {{{
 		group = self.config['joystick'][mode]
 		if(group['mode'] == StickModes.BUTTON):
-			self.evm.setStickButtons([group['buttons']['north'], group['buttons']['west'], group['buttons']['south'], group['buttons']['east']], Modes.GAMEPAD)
+			self.evm.setStickButtons([group['buttons']['north'], group['buttons']['west'], group['buttons']['south'], group['buttons']['east']])
 			if('click' in group['buttons'] and group['buttons']['click'] != None):
-				self.evm.setButtonAction(SCButtons.LPAD, group['buttons']['click'], Modes.GAMEPAD)
+				self.evm.setButtonAction(SCButtons.LPAD, group['buttons']['click'])
 		elif(group['mode'] == StickModes.AXIS):
 			self.evm.setStickAxes(*[axis[0] for axis in group['axes']])
 	# }}}
 
 	def set_diamond_config(self, mode): # {{{
 		group = self.config['button_diamond'][mode]
-		self.evm.setButtonAction(SCButtons.A, group['buttons']['a'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.B, group['buttons']['b'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.X, group['buttons']['x'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.Y, group['buttons']['y'], Modes.GAMEPAD)
+		self.evm.setButtonAction(SCButtons.A, group['buttons']['a'])
+		self.evm.setButtonAction(SCButtons.B, group['buttons']['b'])
+		self.evm.setButtonAction(SCButtons.X, group['buttons']['x'])
+		self.evm.setButtonAction(SCButtons.Y, group['buttons']['y'])
 	# }}}
 
 	def set_switches_config(self, mode, assign_modeshifts): # {{{
 		group = self.config['switch'][mode]
-		self.evm.setButtonAction(SCButtons.LB, group['buttons']['left_bumper'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.RB, group['buttons']['right_bumper'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.START, group['buttons']['start'], Modes.GAMEPAD)
-		self.evm.setButtonAction(SCButtons.BACK, group['buttons']['back'], Modes.GAMEPAD)
+		self.evm.setButtonAction(SCButtons.LB, group['buttons']['left_bumper'])
+		self.evm.setButtonAction(SCButtons.RB, group['buttons']['right_bumper'])
+		self.evm.setButtonAction(SCButtons.START, group['buttons']['start'])
+		self.evm.setButtonAction(SCButtons.BACK, group['buttons']['back'])
 		if(type(group['buttons']['left_grip']) == list):
 			if(assign_modeshifts):
 				self.evm.setButtonCallback(SCButtons.LGRIP, lambda evm, btn, pressed: self.modeshift(group['buttons']['left_grip'], pressed))
 		else:
-			self.evm.setButtonAction(SCButtons.LGRIP, group['buttons']['left_grip'], Modes.GAMEPAD)
+			self.evm.setButtonAction(SCButtons.LGRIP, group['buttons']['left_grip'])
 		if(type(group['buttons']['right_grip']) == list):
 			if(assign_modeshifts):
 				self.evm.setButtonCallback(SCButtons.RGRIP, lambda evm, btn, pressed: self.modeshift(group['buttons']['right_grip'], pressed))
 		else:
-			self.evm.setButtonAction(SCButtons.RGRIP, group['buttons']['right_grip'], Modes.GAMEPAD)
+			self.evm.setButtonAction(SCButtons.RGRIP, group['buttons']['right_grip'])
 	# }}}
 
 	def set_trigger_config(self, pos, mode): # {{{
 		group = self.config['right_trigger'][mode] if pos == Pos.RIGHT else self.config['left_trigger'][mode]
 		if(group['mode'] == TrigModes.BUTTON):
-			self.evm.setTrigButton(pos, group['buttons']['click'], Modes.GAMEPAD)
+			self.evm.setTrigButton(pos, group['buttons']['click'])
 	# }}}
 
