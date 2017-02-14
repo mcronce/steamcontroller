@@ -160,10 +160,10 @@ config_dict = {
 		},
 		'modeshift' : {
 			'buttons' : {
-				'a' : Keys.BTN_TRIGGER_HAPPY,
-				'b' : Keys.BTN_TRIGGER_HAPPY1,
-				'x' : Keys.BTN_TRIGGER_HAPPY2,
-				'y' : Keys.BTN_TRIGGER_HAPPY3
+				'a' : Keys.BTN_TRIGGER_HAPPY1,
+				'b' : Keys.BTN_TRIGGER_HAPPY2,
+				'x' : Keys.BTN_TRIGGER_HAPPY3,
+				'y' : Keys.BTN_TRIGGER_HAPPY4
 			}
 		}
 	}
