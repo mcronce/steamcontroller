@@ -136,16 +136,16 @@ config_dict = {
 			'mode' : StickModes.AXIS,
 			'buttons' : {'click' : Keys.BTN_C},
 			'axes' : [
-				(Axes.ABS_X, -32768, -32767, 16, 128),
-				(Axes.ABS_Y, -32768, -32767, 16, 128),
+				(Axes.ABS_X, -32768, 32767, 16, 128),
+				(Axes.ABS_Y, -32768, 32767, 16, 128),
 			]
 		},
 		'modeshift' : {
 			'mode' : StickModes.AXIS,
 			'buttons' : {'click' : Keys.BTN_Z},
 			'axes' : [
-				(Axes.ABS_RX, -32768, -32767, 16, 128),
-				(Axes.ABS_RY, -32768, -32767, 16, 128),
+				(Axes.ABS_RX, -32768, 32767, 16, 128),
+				(Axes.ABS_RY, -32768, 32767, 16, 128),
 			]
 		}
 	},
