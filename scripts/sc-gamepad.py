@@ -59,7 +59,19 @@ config_dict = {
 				'back' : Keys.BTN_BACK,
 				'start' : Keys.BTN_FORWARD,
 				'left_bumper' : Keys.BTN_TOP,
-				'right_bumper' : Keys.BTN_TOP2
+				'right_bumper' : Keys.BTN_TOP2,
+				'left_grip' : [
+					'left_trigger',
+					'left_trackpad',
+					'joystick',
+					'switch'
+				],
+				'right_grip' : [
+					'right_trigger',
+					'right_trackpad',
+					'button_diamond',
+					'switch'
+				]
 			}
 		}
 	},
