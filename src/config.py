@@ -385,10 +385,11 @@ class Configurator():
 
 	def generate_eventmapper(self): # {{{
 		assert self.config != None
-		self.evm = EventMapper(gamepad_definition = self.generate_gamepad_definition(), modes = self.get_modes())
 		print(self.get_modes())
 		print(self.get_keys())
 		print(self.get_axes())
+		print(self.generate_gamepad_definition())
+		self.evm = EventMapper(gamepad_definition = self.generate_gamepad_definition(), modes = self.get_modes())
 
 		if('active' in self.config['left_trackpad']):
 			self.set_trackpad_config(Pos.LEFT, 'active')
