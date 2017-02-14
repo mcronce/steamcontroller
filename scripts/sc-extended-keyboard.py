@@ -129,10 +129,10 @@ config_dict = {
 		'modeshift' : {
 			'mode' : PadModes.BUTTONCLICK,
 			'buttons' : {
-				'north' : Keys.KEY_F11,
-				'west' : Keys.KEY_F12,
-				'south' : Keys.KEY_F13,
-				'east' : Keys.KEY_F14
+				'north' : Keys.KEY_KP7,
+				'west' : Keys.KEY_KP3,
+				'south' : Keys.KEY_KP1,
+				'east' : Keys.KEY_KP9
 			}
 		}
 	},
@@ -141,21 +141,21 @@ config_dict = {
 			'mode' : StickModes.BUTTON,
 			'buttons' : {
 				'click' : Keys.KEY_GRAVE,
-				# Vim-style "HJKL" but on "4567"
-				'north' : Keys.KEY_6,
-				'west' : Keys.KEY_4,
-				'south' : Keys.KEY_5,
-				'east' : Keys.KEY_7
+				'north' : Keys.KEY_UP,
+				'west' : Keys.KEY_DOWN,
+				'south' : Keys.KEY_LEFT,
+				'east' : Keys.KEY_RIGHT
 			},
 		},
 		'modeshift' : {
 			'mode' : StickModes.BUTTON,
 			'buttons' : {
-				'click' : Keys.KEY_KP0,
-				'north' : Keys.KEY_KP7,
-				'west' : Keys.KEY_KP3,
-				'south' : Keys.KEY_KP1,
-				'east' : Keys.KEY_KP9
+				'click' : Keys.KEY_T,
+				# Vim-style "HJKL" but on "4567"
+				'north' : Keys.KEY_6,
+				'west' : Keys.KEY_4,
+				'south' : Keys.KEY_5,
+				'east' : Keys.KEY_7
 			},
 		}
 	},
@@ -170,10 +170,10 @@ config_dict = {
 		},
 		'modeshift' : {
 			'buttons' : {
-				'a' : Keys.KEY_F15,
-				'b' : Keys.KEY_F16,
-				'x' : Keys.KEY_F17,
-				'y' : Keys.KEY_F18
+				'a' : Keys.KEY_END,
+				'b' : Keys.KEY_HOME,
+				'x' : Keys.KEY_DELETE,
+				'y' : Keys.KEY_INSERT
 			}
 		}
 	}
