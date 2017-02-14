@@ -80,7 +80,7 @@ config_dict = {
 			'mode' : TrigModes.BUTTON,
 			'buttons' : {'click' : Keys.BTN_TL}
 		},
-		'mdoeshift' : {
+		'modeshift' : {
 			'mode' : TrigModes.BUTTON,
 			'buttons' : {'click' : Keys.BTN_TL2}
 		}
@@ -90,7 +90,7 @@ config_dict = {
 			'mode' : TrigModes.BUTTON,
 			'buttons' : {'click' : Keys.BTN_TR}
 		},
-		'mdoeshift' : {
+		'modeshift' : {
 			'mode' : TrigModes.BUTTON,
 			'buttons' : {'click' : Keys.BTN_TR2}
 		}
