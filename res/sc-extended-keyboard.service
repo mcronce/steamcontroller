@@ -1,0 +1,10 @@
+[Unit]
+Description=SteamController Userland driver
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sc-extended-keyboard.py debug
+
+[Install]
+WantedBy=multi-user.target
+
