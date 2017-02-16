@@ -142,8 +142,8 @@ config_dict = {
 			'buttons' : {
 				'click' : Keys.KEY_GRAVE,
 				'north' : Keys.KEY_UP,
-				'west' : Keys.KEY_DOWN,
-				'south' : Keys.KEY_LEFT,
+				'west' : Keys.KEY_LEFT,
+				'south' : Keys.KEY_DOWN,
 				'east' : Keys.KEY_RIGHT
 			},
 		},
